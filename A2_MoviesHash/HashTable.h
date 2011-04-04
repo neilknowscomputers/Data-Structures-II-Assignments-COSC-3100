@@ -22,6 +22,7 @@ private:
     int (*hash)(DataType);
     int size;
     HashTable();
+    int chainLink;
 public:
     HashTable(int(*)(DataType));
     HashTable(int, int(*)(DataType));
@@ -30,8 +31,9 @@ public:
     void remove(DataType);
     void update(DataType);
     DataType retrieve(DataType);
-    int getChainSize(int); //added for audit
-    DataType getChainHead(int); //added for audit
+    int getChainSize(int); //added for audit output
+    void getChain(int,DataType&); //added for audit output
+    DataType getChainHead(int); //added for audit output
 
 };
 
@@ -79,8 +81,15 @@ getChainSize(int index){
 template <class DataType>
 DataType HashTable<DataType>::
 getChainHead(int index){
+    chainLink = 0;
     return table[index].retrieveHead();
 }
 
+template <class DataType>
+void HashTable<DataType>::
+getChainNext(int index, DataType &(chain[])){
+    //chain = new DataType[table[index].getSize()];
+    table[index].retrieveAll(chain);
+}
 #endif	/* HASHTABLE_H */
 

@@ -36,14 +36,18 @@ struct Movie{
 
 const int SIZE = 10;
 const char* FILE_IN = "Movies.txt";
+const char* LINE = "-----------------------------------------";
 int hash(Movie);
 
 int main() {
     HashTable<Movie> table(SIZE,&hash);
     fstream movies(FILE_IN,ios::in);
+
+    int MPAC;
+    string title;
+
+    //buildHash()
     while(movies.peek()!=-1){
-        int MPAC;
-        string title;
         movies >> MPAC;
         getline(movies,title);
         Movie movie(MPAC,title);
@@ -55,8 +59,35 @@ int main() {
             cout << "\tThere was a collision loading " << movie << endl;
             cout << "\tIt collided with " << table.getChainHead(hash(movie)) << endl;
         } else cout << "\tThere was no collision loading " << movie << endl;
-        cout << "-----------------------------------------" << endl;
-	}
+        cout << LINE << endl;
+    }
+
+    //findMovie()
+    do{
+	cout << "Enter a MPAC to locate (0 to end): ";
+        cin.clear();
+	cin >> MPAC;
+        cout << endl;
+	cout << LINE << endl;
+	cout << "Will search for " << MPAC << endl;
+
+        Movie movie(MPAC);
+        table.retrieve(movie);
+        int i = table.getChainSize(hash(movie));
+        Movie allMovies[i];
+        table.getChain(hash(movie),*allMovies);
+        
+        while (i--)
+            if (allMovies[i] != movie)
+                cout << "There was a collision here with " << allMovies[i] << endl;
+
+        if (movie.MPAC != -1)
+            cout << "Retrieved from hash table: " << movie << endl;
+        else
+            cout << "Could not find " << MPAC << endl;
+
+    } while (MPAC);
+
     return 0;
 }
 

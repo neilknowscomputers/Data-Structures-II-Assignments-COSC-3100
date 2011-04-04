@@ -8,6 +8,7 @@
 #ifndef LINKEDLIST_H
 #define	LINKEDLIST_H
 using namespace std;
+#include <iostream>
 
 template <class DataType>
 struct Node{
@@ -36,8 +37,8 @@ public:
     void append(DataType);
     bool remove(DataType);
     DataType retrieve(DataType); //gets and removes
-    DataType retrieveHead();
-    DataType retrieveTail();
+    void retrieveAll(DataType**); //added for audit output
+    DataType retrieveHead(); //added for audit output
     bool isEmpty();
     int getSize();
 };
@@ -65,7 +66,6 @@ find(DataType findMe){
 template <class DataType>
 bool LinkedList<DataType>::
 kill(Node<DataType>* deleteMe){
-    
     if(deleteMe == NULL) //cant kill em if they're dead
         return false; //zombie node
     
@@ -111,15 +111,22 @@ retrieve(DataType findMe){
 }
 
 template <class DataType>
-DataType LinkedList<DataType>::
-retrieveHead(){
-    return head->data;
+void LinkedList<DataType>::
+retrieveAll(DataType** all){
+    //all = new DataType[size];
+    Node<DataType>* copyMe = head;
+    int i = 0;
+    while(copyMe){
+        all[i++] = copyMe->data;
+        cout << "copied " << all[i-1] << endl;
+        copyMe = copyMe->next;
+    }
 }
 
 template <class DataType>
 DataType LinkedList<DataType>::
-retrieveTail(){
-    return tail->data;
+retrieveHead(){
+    return head->data;
 }
 
 template <class DataType>

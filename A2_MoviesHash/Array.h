@@ -4,10 +4,13 @@
  *
  * Created on March 29, 2011, 1:39 AM
  */
+
 using namespace std;
+#include <iostream>
 
 #ifndef ARRAY_H
 #define	ARRAY_H
+
 
 template <class DataType>
 class Array {
