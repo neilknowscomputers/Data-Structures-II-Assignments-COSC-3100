@@ -1,18 +1,28 @@
-/* 
- * File:   HashTable.h
- * Author: neil
- *
- * Created on March 29, 2011, 1:05 AM
- */
-//#include "Array.h"
-//#include "LinkedList.h"
+//******************************************************************************
+//
+//		File:                   HashTable.h
+//
+//		Student:                Neil Peterson
+//
+//		Assignment:             Program #2
+//
+//		Course Name:            Data Structures 2
+//
+//		Course Number:          COSC 3100
+//
+//		Due:                    Apr 5, 2011
+//
+//		Other files required:   Array.h, LinkedList.h
+//
+//******************************************************************************
 
-#include "Array.h";
+#include "Array.h"
 #include "LinkedList.h"
-using namespace std;
 
 #ifndef HASHTABLE_H
 #define	HASHTABLE_H
+
+using namespace std;
 
 template <class DataType>
 class HashTable {
@@ -21,9 +31,10 @@ private:
     Array< LinkedList<DataType> > table;
     int (*hash)(DataType);
     int size;
-    HashTable();
+
     int chainLink;
 public:
+    HashTable();
     HashTable(int(*)(DataType));
     HashTable(int, int(*)(DataType));
 
@@ -31,6 +42,7 @@ public:
     void remove(DataType);
     void update(DataType);
     DataType retrieve(DataType) const;
+    int getSize() const; //added for audit output
     int getChainSize(int) const; //added for audit output
     bool getChain(int, DataType*, DataType) const; //added for audit output
     DataType getChainHead(int) const; //added for audit output
@@ -68,6 +80,12 @@ template <class DataType>
 DataType HashTable<DataType>::
 retrieve(DataType object) const {
     return table[hash(object)].retrieve(object);
+}
+
+template <class DataType>
+int HashTable<DataType>::
+getSize() const {
+    return size;
 }
 
 template <class DataType>

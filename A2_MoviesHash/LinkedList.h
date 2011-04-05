@@ -1,31 +1,43 @@
-/* 
- * File:   LinkedList.h
- * Author: neil
- *
- * Created on March 29, 2011, 1:39 AM
- */
+//******************************************************************************
+//
+//		File:                   Array.h
+//
+//		Student:                Neil Peterson
+//
+//		Assignment:             Program #2
+//
+//		Course Name:            Data Structures 2
+//
+//		Course Number:          COSC 3100
+//
+//		Due:                    Apr 5, 2011
+//
+//		Other files required:   None
+//
+//******************************************************************************
 
 #ifndef LINKEDLIST_H
 #define	LINKEDLIST_H
+
 using namespace std;
-#include <iostream>
 
 template <class DataType>
-struct Node{
-      DataType data;
-      Node* next;
-      Node* prev;
-      Node(DataType d = *(new DataType)){
-          data = d;
-          next = NULL;
-          prev = NULL;
-      }
+struct Node {
+    DataType data;
+    Node* next;
+    Node* prev;
+
+    Node(DataType d = *(new DataType)) {
+        data = d;
+        next = NULL;
+        prev = NULL;
+    }
 };
 
 template <class DataType>
-class LinkedList{
+class LinkedList {
 private:
-    
+
     Node<DataType>* head;
     Node<DataType>* tail;
     int size;
@@ -45,7 +57,7 @@ public:
 
 template <class DataType>
 LinkedList<DataType>::
-LinkedList(){
+LinkedList() {
     head = NULL;
     tail = NULL;
     size = 0;
@@ -53,10 +65,10 @@ LinkedList(){
 
 template <class DataType>
 Node<DataType>* LinkedList<DataType>::
-find(DataType findMe){
+find(DataType findMe) {
     Node<DataType>* thisOne = head;
 
-    while(thisOne->data != findMe && thisOne->next != NULL)
+    while (thisOne->data != findMe && thisOne->next != NULL)
         thisOne = thisOne->next;
 
     if (thisOne->data == findMe) return thisOne;
@@ -65,17 +77,17 @@ find(DataType findMe){
 
 template <class DataType>
 bool LinkedList<DataType>::
-kill(Node<DataType>* deleteMe){
-    if(deleteMe == NULL) //cant kill em if they're dead
+kill(Node<DataType>* deleteMe) {
+    if (deleteMe == NULL) //cant kill em if they're dead
         return false; //zombie node
-    
-    else if(deleteMe->prev == NULL) //is head
+
+    else if (deleteMe->prev == NULL) //is head
         head = deleteMe->next;
 
-    else if(deleteMe->next == NULL) //is head
+    else if (deleteMe->next == NULL) //is head
         tail = deleteMe->prev;
 
-    else if (deleteMe){ //is middle
+    else if (deleteMe) { //is middle
         deleteMe->prev->next = deleteMe->next;
         deleteMe->prev->next->prev = deleteMe->prev; //YEE HAW
     }
@@ -85,11 +97,11 @@ kill(Node<DataType>* deleteMe){
 
 template <class DataType>
 void LinkedList<DataType>::
-append(DataType addMe){
+append(DataType addMe) {
     if (isEmpty())
-        head = tail = new Node<DataType>(addMe);
-    else{
-        tail->next = new Node<DataType>(addMe);
+        head = tail = new Node<DataType > (addMe);
+    else {
+        tail->next = new Node<DataType > (addMe);
         tail->next->prev = tail;
         tail = tail->next;
     }
@@ -99,24 +111,24 @@ append(DataType addMe){
 
 template <class DataType>
 bool LinkedList<DataType>::
-remove(DataType removeMe){
+remove(DataType removeMe) {
     return kill(find(removeMe));
     size--;
 }
 
 template <class DataType>
 DataType LinkedList<DataType>::
-retrieve(DataType findMe){
+retrieve(DataType findMe) {
     return find(findMe)->data;
 }
 
 template <class DataType>
 void LinkedList<DataType>::
-retrieveAll(DataType* all){
+retrieveAll(DataType* all) {
     //all = new DataType[size];
     Node<DataType>* copyMe = head;
     int i = 0;
-    while(copyMe){
+    while (copyMe) {
         all[i++] = copyMe->data;
         //cout << "copying " << all[i-1] << endl;
         copyMe = copyMe->next;
@@ -125,19 +137,19 @@ retrieveAll(DataType* all){
 
 template <class DataType>
 DataType LinkedList<DataType>::
-retrieveHead(){
+retrieveHead() {
     return head->data;
 }
 
 template <class DataType>
 bool LinkedList<DataType>::
-isEmpty(){
+isEmpty() {
     return (head == NULL);
 }
 
 template <class DataType>
 int LinkedList<DataType>::
-getSize(){
+getSize() {
     return size;
 }
 
