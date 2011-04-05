@@ -37,7 +37,7 @@ public:
     void append(DataType);
     bool remove(DataType);
     DataType retrieve(DataType); //gets and removes
-    void retrieveAll(DataType**); //added for audit output
+    void retrieveAll(DataType*); //added for audit output
     DataType retrieveHead(); //added for audit output
     bool isEmpty();
     int getSize();
@@ -112,13 +112,13 @@ retrieve(DataType findMe){
 
 template <class DataType>
 void LinkedList<DataType>::
-retrieveAll(DataType** all){
+retrieveAll(DataType* all){
     //all = new DataType[size];
     Node<DataType>* copyMe = head;
     int i = 0;
     while(copyMe){
         all[i++] = copyMe->data;
-        cout << "copied " << all[i-1] << endl;
+        //cout << "copying " << all[i-1] << endl;
         copyMe = copyMe->next;
     }
 }

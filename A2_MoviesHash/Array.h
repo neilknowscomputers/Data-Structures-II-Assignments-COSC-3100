@@ -23,6 +23,7 @@ public:
     int getSize();
     void clear();
     DataType& operator[](unsigned int);
+    DataType& operator[](unsigned int) const;
 
 };
 
@@ -69,13 +70,19 @@ clear(){
 template <class DataType>
 DataType& Array<DataType>::
 operator[](unsigned int index) {
-    if (index > size-1){ //if out of bounds
-        cout << endl << "index is out of bounds!!" << endl;
+    if (index > size-1) //if out of bounds
         return *(new DataType); //return garbage
-    }
     else
         return array[index];
 }
 
+template <class DataType>
+DataType& Array<DataType>::
+operator[](unsigned int index) const {
+    if (index > size-1) //if out of bounds
+        return *(new DataType); //return garbage
+    else
+        return array[index];
+}
 #endif	/* ARRAY_H */
 

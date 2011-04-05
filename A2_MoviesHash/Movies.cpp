@@ -38,15 +38,25 @@ const int SIZE = 10;
 const char* FILE_IN = "Movies.txt";
 const char* LINE = "-----------------------------------------";
 int hash(Movie);
+int getMPAC(int&);
+void findMovie(const HashTable<Movie>&);
+void buildTable(HashTable<Movie>&, fstream&);
 
 int main() {
     HashTable<Movie> table(SIZE,&hash);
     fstream movies(FILE_IN,ios::in);
 
+    buildTable(table, movies);
+
+    findMovie(table);
+
+    return 0;
+}
+
+void buildTable(HashTable<Movie>& table, fstream& movies){
     int MPAC;
     string title;
 
-    //buildHash()
     while(movies.peek()!=-1){
         movies >> MPAC;
         getline(movies,title);
@@ -61,38 +71,40 @@ int main() {
         } else cout << "\tThere was no collision loading " << movie << endl;
         cout << LINE << endl;
     }
+}
 
-    //findMovie()
-    do{
-	cout << "Enter a MPAC to locate (0 to end): ";
-        cin.clear();
-	cin >> MPAC;
-        cout << endl;
+void findMovie(const HashTable<Movie>& table){
+    int MPAC;
+
+    while (getMPAC(MPAC)){
+        Movie movie = table.retrieve(Movie(MPAC));
+	int size = table.getChainSize(hash(movie));
+        Movie collisons[size];
+        table.getChain(hash(movie),collisons,movie);
+        int index = 0;
+
 	cout << LINE << endl;
 	cout << "Will search for " << MPAC << endl;
 
-        Movie movie(MPAC);
-        table.retrieve(movie);
-        int i = table.getChainSize(hash(movie));
-        Movie allMovies[i];
-        table.getChain(hash(movie),*allMovies);
-        
-        while (i--)
-            if (allMovies[i] != movie)
-                cout << "There was a collision here with " << allMovies[i] << endl;
+        while (index < size-1)
+                cout << "\tThere was a collision here with " << collisons[index++] << endl;
 
         if (movie.MPAC != -1)
             cout << "Retrieved from hash table: " << movie << endl;
         else
             cout << "Could not find " << MPAC << endl;
+    }
+}
 
-    } while (MPAC);
-
-    return 0;
+int getMPAC(int& MPAC){
+    cout << endl << "Enter a MPAC to locate (0 to end): ";
+        cin.clear();
+	cin >> MPAC;
+        return MPAC;
 }
 
 int hash(Movie hashMe){
     int hash = 0.618033 * hashMe.MPAC;
-    return hash % SIZE; //got invalid operand error as one line
+    return hash % SIZE; //got invalid operand error as one line?
 }
 

@@ -15,9 +15,9 @@ using namespace std;
 #define	HASHTABLE_H
 
 template <class DataType>
-class HashTable{
+class HashTable {
 private:
-    
+
     Array< LinkedList<DataType> > table;
     int (*hash)(DataType);
     int size;
@@ -30,66 +30,73 @@ public:
     void insert(DataType);
     void remove(DataType);
     void update(DataType);
-    DataType retrieve(DataType);
-    int getChainSize(int); //added for audit output
-    void getChain(int,DataType&); //added for audit output
-    DataType getChainHead(int); //added for audit output
+    DataType retrieve(DataType) const;
+    int getChainSize(int) const; //added for audit output
+    bool getChain(int, DataType*, DataType) const; //added for audit output
+    DataType getChainHead(int) const; //added for audit output
 
 };
 
-
 template <class DataType>
 HashTable<DataType>::
-HashTable(int newSize, int (*userHash)(DataType)){
+HashTable(int newSize, int (*userHash)(DataType)) {
     hash = userHash;
     size = newSize;
     table.reSize(size);
 }
 
-
 template <class DataType>
 void HashTable<DataType>::
-insert(DataType object){
+insert(DataType object) {
     table[hash(object)].append(object);
 }
 
 template <class DataType>
 void HashTable<DataType>::
-remove(DataType object){
+remove(DataType object) {
     table[hash(object)].remove(object);
 }
 
 template <class DataType>
 void HashTable<DataType>::
-update(DataType object){ //no need to maintain order in list
+update(DataType object) { //no need to maintain order in list
     table[hash(object)].remove(object); //pull it
     table[hash(object)].append(object); //add it back
 }
 
 template <class DataType>
 DataType HashTable<DataType>::
-retrieve(DataType object){
+retrieve(DataType object) const {
     return table[hash(object)].retrieve(object);
 }
 
 template <class DataType>
 int HashTable<DataType>::
-getChainSize(int index){
+getChainSize(int index) const {
     return table[index].getSize();
 }
 
 template <class DataType>
 DataType HashTable<DataType>::
-getChainHead(int index){
-    chainLink = 0;
+getChainHead(int index) const {
     return table[index].retrieveHead();
 }
 
 template <class DataType>
-void HashTable<DataType>::
-getChainNext(int index, DataType &(chain[])){
-    //chain = new DataType[table[index].getSize()];
-    table[index].retrieveAll(chain);
+bool HashTable<DataType>::
+getChain(int index, DataType* chain, DataType excludeMe = NULL) const {
+    int allSize = table[index].getSize();
+    int chainIndex = -1;
+    int allIndex = -1;
+    DataType all[allSize];
+    table[index].retrieveAll(all);
+
+    while (++allIndex < allSize)
+        if (excludeMe != all[allIndex])
+            chain[++chainIndex] = all[allIndex];
+
+
+    return true;
 }
 #endif	/* HASHTABLE_H */
 
